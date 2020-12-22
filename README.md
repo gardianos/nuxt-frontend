@@ -1,4 +1,4 @@
-# frontend
+# Frontend with nuxt.js. 
 
 ## Build Setup
 
