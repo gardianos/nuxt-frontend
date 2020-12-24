@@ -41,8 +41,7 @@ export default {
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: [
-  ],
+  plugins: ['./plugins/mixins/user.js'],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -55,7 +54,7 @@ export default {
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/auth'
-  ], 
+  ],
 
   //axios configuration
   axios: {
@@ -63,22 +62,26 @@ export default {
 
   },
   auth:{
-    endpoints:{
-      login:{
-        url:'login',
-        method:'post',
-        propertyName:'meta.token'
-      },
-      user:{
-        url:'user',
-        method:'get',
-        propertyName:'data'
-      },
-      logout:{
-        url:'logout',
-        methof:'post'
+  strategies:{
+    local:{
+      endpoints:{
+        login:{
+          url:'login',
+          method:'post',
+          propertyName:'meta.token'
+        },
+        user:{
+          url:'user',
+          method:'get',
+          propertyName:'data'
+        },
+        logout:{
+          url:'logout',
+          methof:'post'
+        }
       }
     }
+  }
   },
   
   // Build Configuration (https://go.nuxtjs.dev/config-build)
