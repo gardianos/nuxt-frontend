@@ -2,21 +2,21 @@
     <div class="container col-md-6 mt-5">
         <h2>Register</h2>
         <br>
-        <form @submit.prevent="submit"> 
+        <form @submit.prevent="regsubmit"> 
     <div class="form-group">
     <label >Full Name</label>
     <input v-model="form.name" type="text" class="form-control"  placeholder="Enter your name" autofocus>
-    <small  class="form-text text-danger">Show errors here.</small>
+     <small  class="form-text text-danger" v-if="errors.name">{{errors.name[0]}}</small>
   </div>
    <div class="form-group">
     <label >Email address</label>
     <input v-model="form.email" type="email" class="form-control"  placeholder="Enter email" >
-    <small  class="form-text text-danger">Show errors here.</small>
+     <small  class="form-text text-danger" v-if="errors.email">{{errors.email[0]}}</small>
   </div>
   <div class="form-group">
     <label>Password</label>
     <input v-model="form.password" type="password" class="form-control" placeholder="Password">
-      <small  class="form-text text-danger">Show errors here.</small>
+       <small  class="form-text text-danger" v-if="errors.password">{{errors.password[0]}}</small>
   </div>
   <button type="submit" class="btn btn-primary">Register</button>
 </form>
@@ -40,7 +40,7 @@ export default {
     }
   },
   methods:{
-   async submit(){
+   async regsubmit(){
       await this.$axios.$post('register', this.form)
       await this.$auth.loginWith('local', {
         data:{
@@ -49,7 +49,7 @@ export default {
         }
       })
       // redirect the user 
-      this.$router.push('')
+      this.$router.push('/')
     }
   }
 }
