@@ -5,12 +5,12 @@
         <form @submit.prevent="submit"> 
   <div class="form-group">
     <label >Email address</label>
-    <input v-model="form.email" type="email" class="form-control"  placeholder="Enter email" autofocus>
+    <input v-model.trim="form.email" type="email" class="form-control"  placeholder="Enter email" autofocus>
     <small  class="form-text text-danger" v-if="errors.email">{{errors.email[0]}}</small>
   </div>
   <div class="form-group">
     <label>Password</label>
-    <input v-model="form.password" type="password" class="form-control" placeholder="Password">
+    <input v-model.trim="form.password" type="password" class="form-control" placeholder="Password">
        <small  class="form-text text-danger" v-if="errors.password">{{errors.password[0]}}</small>
   </div>
   <button type="submit" class="btn btn-primary">Login</button>
@@ -25,6 +25,7 @@
 
 <script>
 export default {
+  middleware: ['guest'],
   data(){
     return {
       form: {
@@ -35,12 +36,17 @@ export default {
   },
   methods:{
     async submit(){
+      try{
      const response = await this.$auth.loginWith("local", {
         data: this.form
       })
-      console.log(response)
+        }catch (e){
+          this.$router.push({
+        path: this.$route.query.redirect || "/profile"
+      })
+        }
 
-      this.$router.push('/');
+      
     }
   }
 }

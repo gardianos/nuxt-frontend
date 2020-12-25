@@ -2,20 +2,20 @@
     <div class="container col-md-6 mt-5">
         <h2>Register</h2>
         <br>
-        <form @submit.prevent="regsubmit"> 
+        <form @submit.prevent="submit"> 
     <div class="form-group">
     <label >Full Name</label>
-    <input v-model="form.name" type="text" class="form-control"  placeholder="Enter your name" autofocus>
+    <input v-model.trim="form.name" type="text" class="form-control"  placeholder="Enter your name" autofocus>
      <small  class="form-text text-danger" v-if="errors.name">{{errors.name[0]}}</small>
   </div>
    <div class="form-group">
     <label >Email address</label>
-    <input v-model="form.email" type="email" class="form-control"  placeholder="Enter email" >
+    <input v-model.trim="form.email" type="email" class="form-control"  placeholder="Enter email" >
      <small  class="form-text text-danger" v-if="errors.email">{{errors.email[0]}}</small>
   </div>
   <div class="form-group">
     <label>Password</label>
-    <input v-model="form.password" type="password" class="form-control" placeholder="Password">
+    <input v-model.trim="form.password" type="password" class="form-control" placeholder="Password">
        <small  class="form-text text-danger" v-if="errors.password">{{errors.password[0]}}</small>
   </div>
   <button type="submit" class="btn btn-primary">Register</button>
@@ -30,6 +30,7 @@
 
 <script>
 export default {
+  middleware: ['guest'],
   data(){
     return{
       form:{
@@ -40,7 +41,7 @@ export default {
     }
   },
   methods:{
-   async regsubmit(){
+   async submit(){
       await this.$axios.$post('register', this.form)
       await this.$auth.loginWith('local', {
         data:{
@@ -48,8 +49,11 @@ export default {
           password: this.form.password
         }
       })
-      // redirect the user 
-      this.$router.push('/')
+
+      // change to the path profile if the user dont login or register
+     this.$router.push({
+        path: this.$route.query.redirect || "/profile"
+      })
     }
   }
 }

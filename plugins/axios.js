@@ -1,12 +1,16 @@
-export default function({$axios, store}){
-    $axios.onError(error => {
-        if(error.response.status === 422){
-            store.dispatch("validation/setErrors", error.response.data.errors)
-        }
-        return Promise.reject(error)
-    });
-
-    $axios.onRequest(()=> {
-        store.dispatch("validation/clearErrors")
-    })
+export default function({
+	$axios,
+	store,
+	redirect
+}) {
+	$axios.onError(error => {
+		if (error.response.status === 422) {
+			store.dispatch('validation/setErrors', error.response.data.errors)
+			return redirect("/profile")
+		}
+		return Promise.reject(error)
+	})
+	$axios.onRequest(() => {
+		store.dispatch('validation/clearErrors')
+	})
 }
